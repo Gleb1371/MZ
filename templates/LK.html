@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="static/index.css">
+    <title>Мои задачи</title>
+    <link rel = "icon" href = "C:\Users\Администратор\OneDrive\Desktop\МЗ\pic\task-manager-icon-21.ico">
+</head>
+
+<body class="text-white bg-dark">
+    <div class= "container">
+        <div class="row justify-content-between">
+            <div class="zadachi col-auto custom-text fs-1 fs-md-2 fs-lg-3"><a href = index.html>Мои задачи</a></div>
+            <div class="col-auto custom-text fs-1 fs-md-2 fs-lg-3">RU</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sostoyanie row justify-content-between">
+            <div id="current-tasks" class="col-auto custom-text fs-2 fs-md-3 fs-lg-4 underline">Текущие</div>
+            <div id="completed-tasks" class="col-auto custom-text fs-2 fs-md-3 fs-lg-4">Завершённые</div>
+            <div class="col-auto custom-text fs-2 fs-md-3 fs-lg-4" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCreate" data-bs-whatever="@mdo">+Создать задачу</div>
+        </div>
+        <div id="task-list" class="mt-5">
+            <!-- Тут будут отображаться задачи -->
+        </div>
+    </div>    
+    
+    <!-- Модальное окно для создания задачи -->
+    <div class="modal fade" id="exampleModalCreate" tabindex="-1" aria-labelledby="exampleModalLabelCreate" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelCreate">Создать задачу</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="task-form-create">
+                        <div class="mb-3">
+                            <label for="recipient-name-create" class="col-form-label">Название задачи</label>
+                            <input type="text" class="form-control" id="recipient-name-create" maxlength="30">
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text-create" class="col-form-label">Текст задачи</label>
+                            <textarea class="form-control" id="message-text-create" maxlength="300"></textarea>
+                        </div>
+                        <div class="d-none" id="error-message-create" style="cursor: pointer; color: red;">Заполните все поля!</div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" style="cursor: pointer; background-color: red;" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn" style="cursor: pointer; background-color: lime;" id="create-task-btn">Создать</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно для просмотра задачи -->
+    <div class="modal fade" id="exampleModalView" tabindex="-1" aria-labelledby="exampleModalLabelView" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelView">Название задачи</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="message-text-view" class="col-form-label">Текст задачи</label>
+                        <textarea class="form-control" id="message-text-view" rows="5" disabled></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для редактирования задачи -->
+    <div class="modal fade" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabelEdit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelEdit">Редактировать задачу</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="task-form-edit">
+                        <div class="mb-3">
+                            <label for="recipient-name-edit" class="col-form-label">Название задачи</label>
+                            <input type="text" class="form-control" id="recipient-name-edit" maxlength="30">
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text-edit" class="col-form-label">Текст задачи</label>
+                            <textarea class="form-control" id="message-text-edit" maxlength="300"></textarea>
+                        </div>
+                        <input type="hidden" id="task_id">
+                        <div class="d-none" id="error-message-edit" style="cursor: pointer; color: red;">Заполните все поля!</div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" style="cursor: pointer; background-color: red;" data-bs-dismiss="modal">Отменить</button>
+                    <button type="button" class="btn" style="cursor: pointer; background-color: lime;" id="save-task-btn">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+    <!-- Модальное окно для удаления задачи -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel"><span id="delete-task-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="color: white; font-family: Source serif pro; font-size: 20px;">
+                    Вы уверены, что хотите удалить эту задачу?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="cursor: pointer; background-color: lime; color: black;">Отмена</button>
+                    <button type="button" id="confirm-delete-btn" class="btn btn-danger" style="cursor: pointer; background-color: red; color: black;" data-bs-dismiss="modal">Удалить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для завершения задачи -->
+    <div class="modal fade" id="exampleModalComplete" tabindex="-1" aria-labelledby="exampleModalLabelComplete" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelComplete"><span id="complete-task-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="fs-5" style="color: white;">Вы действительно хотите завершить эту задачу?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" style="background-color: red;" data-bs-dismiss="modal">Выйти</button>
+                    <button type="button" class="btn" style="background-color: #40E0D0;" id="confirmCompleteBtn">Завершить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для возобновления задачи -->
+    <div class="modal fade" id="exampleModalResume" tabindex="-1" aria-labelledby="exampleModalLabelResume" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelResume"><span id="resume-task-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="fs-5" style="color: white;">Вы действительно хотите возобновить эту задачу?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" style="background-color: red;" data-bs-dismiss="modal">Выйти</button>
+                    <button type="button" class="btn" style="background-color: #40E0D0;" id="confirmResumeBtn">Возобновить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="static/LK.js" defer></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>    
+    
+</body>
+
+</html>
