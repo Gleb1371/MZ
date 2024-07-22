@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import jwt
+import os
 
 from passlib.context import CryptContext
 
@@ -30,6 +31,8 @@ engine = create_async_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 
 # Шаблоны
+current_directory = os.path.dirname(os.path.abspath(__file__))
+index = Jinja2Templates(directory=current_directory)
 templates = Jinja2Templates(directory="templates")
 
 SECRET_KEY = "PRAKTIKA2024"
@@ -105,7 +108,7 @@ class JWTAuthanticationBackend(AuthenticationBackend):
         return AuthCredentials(["authenticated"]), SimpleUser(user_id)
 
 async def homepage(request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return index.TemplateResponse("index.html", {"request": request})
 
 async def lk_page(request):
     return templates.TemplateResponse("LK.html", {"request": request})
