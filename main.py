@@ -25,7 +25,7 @@ from starlette.requests import Request
 
 Base = declarative_base()
 
-DATABASE_URL = "postgresql+asyncpg://postgres:password123@localhost:5432/tasks"
+DATABASE_URL = "postgresql+asyncpg://gleb:9mLxoYEdiqdk5rAAYEmfYVM89VjksTQM@dpg-cqf99208fa8c73ene5v0-a:5432/manager_yscq"
 database = Database(DATABASE_URL)
 engine = create_async_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
