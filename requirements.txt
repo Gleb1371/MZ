@@ -1,0 +1,7 @@
+starlette==0.27.0
+databases[postgresql]==0.5.5
+sqlalchemy[asyncio]==1.4.44
+asyncpg==0.26.0
+passlib==1.7.4
+PyJWT==2.4.0
+jinja2==3.1.2
