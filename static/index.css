@@ -1,0 +1,95 @@
+@font-face {
+    font-family: "Source serif pro";
+    /* Браузер сначала попробует найти шрифт локально */
+    src: local("Source serif pro")
+}
+
+body {
+    font-family: "Source serif pro", "Regular", sans-serif;
+}
+
+.ram-text {
+    color: white;
+}
+
+.toggle-icon {
+    cursor: pointer; /* Делаем курсор указателем для элемента, который можно кликнуть */
+}
+
+.custom-text {
+    color: #40E0D0;
+}
+
+.container {
+    margin-top: 1em;
+}
+
+.ramka {
+    background-color: #40E0D0;
+    border-radius: 20px;
+}
+
+.btn-b {
+    background-color: yellow; 
+    color: black; 
+}
+
+.inside {
+    padding-top: 2em;
+    padding-bottom: 2em;
+}
+
+.bottom {
+    margin-bottom: 2em;
+    color: #40E0D0;
+}
+
+.bottom .ram-text {
+    color: inherit; /* Наследуем цвет текста от родительского элемента */
+}
+
+.interface {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+a {
+    color: white;
+}
+
+.zadachi a {
+    color: #40E0D0;
+    text-decoration: none;
+}
+
+.sostoyanie .col-auto{
+    color: white;
+}
+
+.modal-title, .modal-body {
+    color: #40E0D0; 
+}
+
+.modal-content {
+    background-color: #343a40;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.custom-text {
+    cursor: pointer;
+}
+
+.text-success {
+    color: lime;
+}
+
+.text-danger {
+    color: red;
+}
+
+.text-info {
+    color: #40E0D0;
+}
