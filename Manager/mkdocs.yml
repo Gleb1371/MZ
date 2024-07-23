@@ -1,0 +1,14 @@
+site_name: Мои задачи
+theme:
+  name: material
+  palette:
+    primary: teal
+    accent: teal
+nav:
+  - Главная: index.md
+  - Функции:
+    - Создание задач: create_task.md
+    - Редактирование задач: edit_task.md
+    - Удаление задач: delete_task.md
+    - Отслеживание статуса: track_status.md
+  - Интерфейс: interface.md
