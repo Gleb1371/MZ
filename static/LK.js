@@ -188,6 +188,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }    
     
+    const createModalElement = document.getElementById('exampleModalCreate');
+    const createTaskBtn = document.getElementById('create-task-btn');
+
+    createTaskBtn.addEventListener('click', createTask);
+
+    createModalElement.addEventListener('hidden.bs.modal', () => {
+        document.getElementById('recipient-name-create').value = '';
+        document.getElementById('message-text-create').value = '';
+    });
+
     async function createTask() {
         if (!token) {
             console.error('Токен не найден, пользователь не аутентифицирован');
@@ -199,8 +209,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!heading || !task_text) {
             console.error('Название и текст задачи не могут быть пустыми');
+            document.getElementById('error-message-create').classList.remove('d-none');
             return;
         }
+
+        document.getElementById('error-message-create').classList.add('d-none');
 
         const taskData = {
             heading,
@@ -221,9 +234,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const result = await response.json();
                 console.log('Задача успешно создана:', result);
                 showTasks(currentCategory);
-                if (createModal) {
-                    createModal.hide();
-                }
+
+                // Скрываем модальное окно после успешного создания задачи
+                const bootstrapModal = bootstrap.Modal.getInstance(createModalElement);
+                bootstrapModal.hide();
             } else {
                 console.error('Ошибка при создании задачи:', response.statusText);
             }
@@ -331,63 +345,9 @@ document.addEventListener('DOMContentLoaded', function () {
         saveTask(true, task_id, heading, task_text); // true означает редактирование задачи
     });    
 
-    if (createTaskModalBtn) {
-        createTaskModalBtn.addEventListener('click', function () {
-            if (createModal) {
-                document.getElementById('recipient-name-create').value = '';
-                document.getElementById('message-text-create').value = '';
-                createModal.show();
-            }
-        });
-    }
-
     document.getElementById('create-task-btn')?.addEventListener('click', function () {
         createTask();
     });
-    
-    async function createTask() {
-        if (!token) {
-            console.error('Токен не найден, пользователь не аутентифицирован');
-            return;
-        }
-    
-        const heading = document.getElementById('recipient-name-create').value.trim();
-        const task_text = document.getElementById('message-text-create').value.trim();
-    
-        if (!heading || !task_text) {
-            console.error('Название и текст задачи не могут быть пустыми');
-            return;
-        }
-    
-        const taskData = {
-            heading,
-            task_text
-        };
-    
-        try {
-            const response = await fetch('/create_task', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(taskData)
-            });
-    
-            if (response.ok) {
-                const result = await response.json();
-                console.log('Задача успешно создана:', result);
-                showTasks(currentCategory);
-                if (createModal) {
-                    createModal.hide();
-                }
-            } else {
-                console.error('Ошибка при создании задачи:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Ошибка при создании задачи:', error);
-        }
-    }    
 
     if (taskId) {
         fetchTaskDetails(taskId);
