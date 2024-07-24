@@ -1,9 +1,7 @@
 from datetime import datetime, timedelta
 import jwt
 import os
-
 from passlib.context import CryptContext
-
 from databases import Database
 from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, ForeignKey
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -11,7 +9,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.future import select
 from sqlalchemy.orm import sessionmaker, joinedload, relationship
 from sqlalchemy.exc import IntegrityError
-
 from starlette.applications import Starlette
 from starlette.authentication import AuthCredentials, AuthenticationBackend, SimpleUser, requires
 from starlette.exceptions import HTTPException
@@ -113,7 +110,6 @@ async def homepage(request):
 async def lk_page(request):
     return templates.TemplateResponse("LK.html", {"request": request})
 
-# Регистрация нового пользователя
 async def registration(request: Request):
     data = await request.json()
     
@@ -139,7 +135,6 @@ async def registration(request: Request):
                 await session.rollback()
                 return JSONResponse({"error": str(e)}, status_code=400)
 
-# Авторизация пользователя
 async def auth(request: Request):
     data = await request.json()
     async with SessionLocal() as session:
@@ -153,7 +148,6 @@ async def auth(request: Request):
         return JSONResponse({"access_token": token}, status_code=200)
     return JSONResponse({"error": "Неверный логин или пароль"}, status_code=401)
 
-# Удаление задачи 
 @requires("authenticated")
 async def delete_task(request):
     task_id = int(request.path_params["task_id"]) 
@@ -175,7 +169,6 @@ async def delete_task(request):
 
     return JSONResponse({"message": f"Задача с айди={task_id} была удалена"})
 
-# Получение задачи по ID
 @requires("authenticated")
 async def get_task_by_id(request):
     task_id = int(request.path_params["task_id"])
@@ -200,7 +193,6 @@ async def get_task_by_id(request):
     else:
         return JSONResponse({"error": "Task not found"}, status_code=404)
     
-# Получаем текущие задачи определенного пользователя
 @requires("authenticated")
 async def get_now_tasks(request):
     user_id = int(request.user.username)
@@ -224,7 +216,6 @@ async def get_now_tasks(request):
 
     return JSONResponse(tasks_list)
 
-# Отображаем только завершенные задачи
 @requires("authenticated")
 async def get_completed_tasks(request):
     user_id = int(request.user.username)
@@ -248,7 +239,6 @@ async def get_completed_tasks(request):
 
     return JSONResponse(tasks_list)
 
-# Создаем задачу
 @requires("authenticated")
 async def create_task(request):
     data = await request.json()
@@ -279,7 +269,6 @@ async def create_task(request):
             
             return JSONResponse(response_data, status_code=201)
 
-# Редактируем задачу
 @requires("authenticated")
 async def update_task(request):
     data = await request.json()
@@ -310,7 +299,6 @@ async def update_task(request):
             else:
                 return JSONResponse({"error": "Задача не найдена или не принадлежит пользователю"}, status_code=404)
 
-# Завершение задачи
 @requires("authenticated")
 async def complete_task(request):
     task_id = int(request.path_params["task_id"])
@@ -331,7 +319,6 @@ async def complete_task(request):
 
     return JSONResponse({"message": "Задача завершена"})
 
-# Возобновление задачи
 @requires("authenticated")
 async def resume_task(request):
     task_id = int(request.path_params["task_id"])
